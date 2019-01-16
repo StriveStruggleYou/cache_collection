@@ -138,6 +138,18 @@ key 操作
 salve 的机器需要在redis.conf文件中
 添加
 slaveof master host port
+
+slave-read-only yes 表示slave 只读不写，这样做主从切换的时候要把slave单独切换成 master。
+
+切换slave命令
+slaveof no one 这样就变成一个独立的master了，就可以写入了。
 ```
+一主多slave部署
+```
+1.不推荐拓扑结构,这样切换master要修改很多个slave的redis的情况
+
+2.推荐链状结构，master---->slave1------>slave2当我们变slave1成master的时候不需要修改slave2
+```
+
 
 ## memeroy
