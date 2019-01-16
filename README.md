@@ -134,6 +134,10 @@ key 操作
 ### 高可用redis
 
 #### 主从模式master／salve 模式
-
+```
+salve 的机器需要在redis.conf文件中
+添加
+slaveof master host port
+```
 
 ## memeroy
