@@ -28,6 +28,32 @@ key 操作
   
   pttl key 毫秒的生命周期，其余同上
   
+  SET key value [EX seconds] [PX milliseconds] [NX|XX]  NX 不存在才执行，XX 存在才执行 NX 可以用于构建分布式锁，执行成功的，对 key 的时间不断追加时间
+  
+  setnx key value 不存在才设置成功
+  
+  get key
+  
+  getset key value 返回旧的值，设置新的值进去
+  
+  incr key number number 不存在加1 ，存在就指定步长
+  
+  decr key number number 不存在就减1 存在就减去步长
+  
+  incrby key number number 必须存在
+  
+  decrby key nymber number 必须存在
+  
+  incrbyfloat key number 自增浮点数
+  
+  append key value 追加key 的值
+  
+  substr key start end 截取字符串
+  
+  setrange key offset value 片段修改字符串
+  
+  
+  
   
   
 
