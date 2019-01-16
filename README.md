@@ -52,6 +52,21 @@ key 操作
   
   setrange key offset value 片段修改字符串
   
+  getrange key start end 截取字符串
+  
+  strlen key 获取key的长度
+  
+  getbit key offset 获取bit 偏移
+  
+  setbit key offset value 设置bit偏移量
+  
+  bitcount key start end 统计总共的偏移
+  
+  bitop 位于操作会阻塞比较长的时间，不建议在master上操作
+  
+  lpush key string  江湖规矩 lpush rpop 1表是成功 0表示key存在但不是list类型
+  
+  linsert list after／before key newkey 在list指定位置之前或者是之后插入 key
   
   
   
