@@ -88,7 +88,57 @@ key 操作
   
   brpop 从尾部删除
   
-  rpoplpush srckey destkey 从一个队列尾部移动到一个队列的头部
+  rpoplpush srckey destkey 从一个队列尾部移动到一个队列的头部返回值的移除的数据，两个队列交换数据。安全队列使用 RPOPLPUSH 命令(或者它的阻塞版本 BRPOPLPUSH )可以解决这个问题：因为它不仅返回一个消息，同时还将这个消息添加到另一个备份列表当中，如果一切正常的话，当一个客户端完成某个消息的处理之后，可以用 LREM 命令将这个消息从备份表删除。另一个应用场景是循环链表。
+  
+  sadd key member 成功返回1 如果在集合中返回0，添加的key不是set就返回错误
+  
+  srem key member 成功返回1 如果 集合不存在 member不存在返回0 key 不是set返回错误
+  
+  spop key 如果set为空或者不存在返回nil
+  
+  srandommember key 随机取一个set的值但是不删除
+  
+  smove srckey destkey member 从srckey 移除 member 到destkey
+  
+  scard key 查看集合大小
+  
+  sismember key member 判断 member是否在set中
+  
+  sinter key key1 返回指定 set的交集
+  
+  sinterstore destkey key key1 交集存到destkey
+  
+  sunion key key1 并集
+  
+  sunionstrore destkey key key1 并集存到destkey
+  
+  sdiff key key1 差集
+  
+  sdiffstore destkey key key1 差集存储到destkey
+  
+  smembers key 返回set所有元素，set过多会阻塞，生产禁止使用
+  
+  zadd key score member  有序集合的评分
+  
+  zrem key member 删除有序集合的key
+  
+  zremrankgebyrank 删除排名在指定区间的范围
+  
+  zremrenkgescore 删除得分在指定区间的范围
+  
+  2.5.3 待续
+  
+  
+  
+  
+  
+  
+
+
+  
+  
+  
+  
   
   
   
