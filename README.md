@@ -150,6 +150,12 @@ slaveof no one 这样就变成一个独立的master了，就可以写入了。
 
 2.推荐链状结构，master---->slave1------>slave2当我们变slave1成master的时候不需要修改slave2
 ```
+应用层面如何去实现，zk做开关，能切换的时候统一切换
+```
+1.zk实现的开关
+
+2.开关是否全部生效的监控问题
+```
 
 
 ## memeroy
