@@ -68,6 +68,37 @@ key 操作
   
   linsert list after／before key newkey 在list指定位置之前或者是之后插入 key
   
+  llen key 如果key不存在就是0 如果不是list类型就报错
+  
+  lindex mylist index 返回list 索引的位置
+  
+  lrange key start end 查看范围的 list 0 -1 表示返回全部（-1 是倒数最后一个的意思）
+  
+  ltrim key start end 保留指定区间的元素，返回的n是被移除的元素个数
+  
+  lrem key count value 从list 中删除count个的值
+  
+  lpop key 从头部删除
+  
+  rpop 从尾部删除
+  
+  lset key index value 设置list指定index 的值
+  
+  blpop key key1 keyn timeout 阻塞队列 从头部删除 
+  
+  brpop 从尾部删除
+  
+  rpoplpush srckey destkey 从一个队列尾部移动到一个队列的头部
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
