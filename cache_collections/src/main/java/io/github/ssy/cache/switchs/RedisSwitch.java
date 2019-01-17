@@ -2,6 +2,13 @@ package io.github.ssy.cache.switchs;
 
 public class RedisSwitch implements Switch {
 
+
+  SwitchFactory switchFactory;
+
+  public RedisSwitch(SwitchFactory switchFactory) {
+    this.switchFactory = switchFactory;
+  }
+
   private String relativePath;
 
   private String switchName;
@@ -11,7 +18,7 @@ public class RedisSwitch implements Switch {
 
   @Override
   public boolean isOn() {
-    if (switchNum == 0) {
+    if (switchFactory.getSwitch(SwitchEnum.CDN_REDIS1_ENUM.getRelativePath()) == 0) {
       return false;
     }
     return true;

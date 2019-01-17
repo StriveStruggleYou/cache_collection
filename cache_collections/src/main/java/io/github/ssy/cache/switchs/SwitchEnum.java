@@ -1,7 +1,7 @@
 package io.github.ssy.cache.switchs;
 
 public enum SwitchEnum {
-  CDN_REDIS1_ENUM("/cdn/redis1/switch","cdn_redis1");
+  CDN_REDIS1_ENUM("/sw/cdn/redis1/switch","cdn_redis1");
 
   private String relativePath;
 
@@ -12,6 +12,19 @@ public enum SwitchEnum {
     this.switchName = switchName;
   }
 
+  public String getRelativePath() {
+    return relativePath;
+  }
 
+  public void setRelativePath(String relativePath) {
+    this.relativePath = relativePath;
+  }
 
+  public String getSwitchName() {
+    return switchName;
+  }
+
+  public void setSwitchName(String switchName) {
+    this.switchName = switchName;
+  }
 }
