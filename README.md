@@ -157,6 +157,8 @@ slaveof no one 这样就变成一个独立的master了，就可以写入了。
 2.开关是否全部生效的监控问题
 
 3.为防止丢失数据，切勿将redis保存重要的数据信息
+
+java代码实现,参考cache_collections里面的具体实现
 ```
 
 
