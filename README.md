@@ -150,7 +150,7 @@ key 操作
  
   hget key field 获取hash值
   
-  hmget key field1 field2
+  hmget key field1 field2 一次获取多个hash的 value
   
 
 ```
