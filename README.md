@@ -187,6 +187,8 @@ sentinel leader-epoch mymaster 2
 1.注意，旧master起来的时候因为已经有一个新的master了，如果要满足主从复制，那么我们需要在原来旧master上配置
 masterauth "chen123" 原来他自己是master 可能就没有配，但是主从一切换他就变从了。所以理论上所有的都需要配上
 这个东西。
+
+2.sentinel 故障转移也有一个短暂时间不可用，需要非get请求记录到日志里面，后续可以把这段时间的请求，通过日志重新写入。
 ```
 
 
