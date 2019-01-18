@@ -126,7 +126,24 @@ key 操作
   
   zremrenkgescore 删除得分在指定区间的范围
   
-  2.5.3 待续
+  zincrby key incr member 增减score的分数
+  
+  zrank key member 获取当前对象的排名，从小到大
+  
+  zrevrank key member 获取当前对象的排名，从大到小
+  
+  zrange key start end 获取排行榜，有序结果从小到大
+  
+  zrevrange key start end 获取排行榜，有序结果从大到小
+  
+  zrangebyscore key min max 获取指定分数间的所有元素
+  
+  zcount key min max 统计指定分数间元素数量
+  
+  zscore key element 返回指定key的对象的分数
+  
+  zunionstore 评分聚合
+  
   
 
 ```
