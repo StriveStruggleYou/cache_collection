@@ -164,7 +164,30 @@ java代码实现,参考cache_collections里面的具体实现
 ```
 
 #### sentinel模式主动切换
-
+sentinel 配置文件
+```
+port 26379
+bind 192.168.60.10
+daemonize no
+pidfile "/var/run/redis-sentinel1.pid"
+logfile ""
+dir "/private/tmp"
+sentinel myid 6c677bfb2642e1b873e1ad248b9de71972d4d1c2
+sentinel deny-scripts-reconfig yes
+sentinel monitor mymaster 192.168.60.10 7379 2
+#redis 有密码的时候需要加上
+sentinel auth-pass mymaster chen123
+protected-mode no
+sentinel config-epoch mymaster 2
+sentinel leader-epoch mymaster 2
+```
+应用层面实现
+```
+参考 cache_collection 里面的具体实现
+1.注意，旧master起来的时候因为已经有一个新的master了，如果要满足主从复制，那么我们需要在原来旧master上配置
+masterauth "chen123" 原来他自己是master 可能就没有配，但是主从一切换他就变从了。所以理论上所有的都需要配上
+这个东西。
+```
 
 
 
