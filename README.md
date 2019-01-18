@@ -147,7 +147,10 @@ key 操作
   hset key field value 设置key的hash值
   
   hsetnx 如果key不存在先创建
+ 
+  hget key field 获取hash值
   
+  hmget key field1 field2
   
 
 ```
