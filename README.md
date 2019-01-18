@@ -144,6 +144,10 @@ key 操作
   
   zunionstore 评分聚合
   
+  hset key field value 设置key的hash值
+  
+  hsetnx 如果key不存在先创建
+  
   
 
 ```
