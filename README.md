@@ -156,9 +156,41 @@ key 操作
   
   hexistis key field 判断hash key值是否存在
   
+  hdel key field 删除hash域
   
+  hlen key 获取hash 的长度
+  
+  hkeys key 获取所有的key
+  
+  hvals key 获取所有的value
+  
+  hgetall 获取hash key and value
+```
+HyperLogLog大数据非精准计数
+```
+PFADD key element 基数估算者
+
+PFCOUNT key 基数估算值
+
+PFMERGE destkey sourcekey 合并多个HyperLogLog
+```
+排序功能
+```
+sort key [BY pattern] [LIMIT start count] [GET pattern] [ASC|DESC] [ALPHA] [STORE dstk ey] 
+1. [ASC|DESC][ALPHA]:sort默认的排序方式(asc)是从小到大排的,当然也可以按照逆序 或者按字符顺序排。
+2. [BYpattern]:除了可以按集合元素自身值排序外，还可以将集合元素内容按照给定 pattern组合成新的key，并按照新key中对应的内容进行排序。例如:
+3. 127.0.0.1:6379sortwatch:letobysevertity:*desc
+4. [GETpattern]:可以通过get选项去获取指定pattern作为新key对应的值，get选项可以有
+多个。例如:127.0.0.1:6379sort watch:leto by severtity: get severtity:。 对于Hash的引
+用，采用->，例如:sort watch:leto get # get bug:*->priority。
+5. [LIMITstartcount]限定返回结果的数量。
+6. [STOREdstkey]把排序结果缓存起来
+```
+事务功能
+```
 
 ```
+
 
 ### 高可用redis
 
