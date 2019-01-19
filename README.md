@@ -218,6 +218,64 @@ key的一个格式约定: object-type:id:field 。用":"分隔域，用"."作为
 2. 如果将redis作为cache进行频繁读写和超时删除等，此时应该避免设置较大的k-v，因为 这样会导致redis的 内存碎片增加，导致rss占用较大，最后被操作系统OOM killer干掉。 一个很具体的issue例子请见:https://github.com/antirez/redis/issues/2136
 3. 如果采用序列化考虑通用性，请采用json相关的库进行处理，如果对内存大小和速度都很 关注的，推荐使用messagepack进行序列化和反序列化
 4. 如果需要计数器，请将计数器的key通过天或者小时分割，采用hash.
+
+```
+延迟考虑
+```
+1. 尽可能使用批量操作:mget、hmget而不是get和hget，对于set也是如此。 lpush向一个list一次性导入多个元素，而不用lset一个个添加 LRANGE 一次取出一个范围的元素，也不用LINDEX一个个取出。
+2. 尽可能的把redis和APP SERVER部署在一个网段甚至一台机器。
+3. 对于数据量较大的集合，不要轻易进行删除操作，这样会阻塞 服务器，一般采用重命名+批量删除的策略：
+
+排序集合:
+# Rename the key
+newkey = "gc:hashes:" + redis.INCR("gc:index")
+redis.RENAME("my.zset.key", newkey)
+# Delete members from the sorted set in batche of 100s
+while redis.ZCARD(newkey) > 0
+  redis.ZREMRANGEBYRANK(newkey, 0, 99)
+end
+
+集合：
+# Rename the key
+newkey = "gc:hashes:" + redis.INCR("gc:index")
+redis.RENAME("my.set.key", newkey)
+# Delete members from the set in batches of 100
+cursor = 0
+loop
+  cursor, members = redis.SSCAN(newkey, cursor, "COUNT", 100)
+  if size of members > 0
+redis.SREM(newkey, members)
+end
+  if cursor == 0
+break
+end end
+
+列表：
+# Rename the key
+newkey = "gc:hashes:" + redis.INCR("gc:index")
+redis.RENAME("my.list.key", newkey)
+# Trim off elements in batche of 100s
+while redis.LLEN(newkey) > 0
+  redis.LTRIM(newkey, 0, -99)
+end
+
+Hash:
+# Rename the key
+newkey = "gc:hashes:" + redis.INCR( "gc:index" )
+redis.RENAME("my.hash.key", newkey)
+# Delete fields from the hash in batche of 100s
+cursor = 0
+loop
+  cursor, hash_keys = redis.HSCAN(newkey, cursor, "COUNT", 100)
+  if hash_keys count > 0
+redis.HDEL(newkey, hash_keys)
+end
+  if cursor == 0
+break
+end end
+
+
+
 ```
 
 
