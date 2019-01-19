@@ -201,7 +201,24 @@ redis作为一个pub/sub server，在订阅者和发布者之间起到了消息�
 当发布者通过publish命令向redis server发送特定类型的消息时。订阅该消 息类型的全部client都会收到此消息。这里消息的传递是多对多的。
 一个client可以订阅多个 channel,也可以向多个channel发送消息。
 ```
+Key设计
+```
+key的一个格式约定: object-type:id:field 。用":"分隔域，用"."作为单词间的连接，如" comment:12345:reply.to "。不推荐含义不清的key和特别长的key。
 
+从业务需求逻辑和内存的角度，尽可能的设置key存活时间。
+
+程序应该处理如果redis数据丢失时的清理redis内存和重新加载的过程。
+```
+
+内存考虑
+```
+1. 只要有可能的话，就尽量使用散列键而不是字符串键来储存键值对数据，因为散列键管
+  理方便、能够避免键名冲突、并且还能够节约内存。
+具体实例: 节约内存:Instagram的Redis实践 blog.nosqlfan.com/html/3379.html
+2. 如果将redis作为cache进行频繁读写和超时删除等，此时应该避免设置较大的k-v，因为 这样会导致redis的 内存碎片增加，导致rss占用较大，最后被操作系统OOM killer干掉。 一个很具体的issue例子请见:https://github.com/antirez/redis/issues/2136
+3. 如果采用序列化考虑通用性，请采用json相关的库进行处理，如果对内存大小和速度都很 关注的，推荐使用messagepack进行序列化和反序列化
+4. 如果需要计数器，请将计数器的key通过天或者小时分割，采用hash.
+```
 
 
 
