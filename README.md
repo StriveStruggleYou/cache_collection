@@ -188,8 +188,18 @@ sort key [BY pattern] [LIMIT start count] [GET pattern] [ASC|DESC] [ALPHA] [STOR
 ```
 事务功能
 ```
-
 ```
+流水线(pipeline)
+```
+批量set改成pipeline 可以提升很高的效率
+```
+
+发布订阅
+```
+redis作为一个pub/sub server，在订阅者和发布者之间起到了消息路由的功能。订阅者可以通 过subscribe和psubscribe命令向redis server订阅自己感兴趣的消息类型，redis将消息类型称 为频道(channel)。当发布者通过publish命令向redis server发送特定类型的消息时。订阅该消 息类型的全部client都会收到此消息。这里消息的传递是多对多的。一个client可以订阅多个 channel,也可以向多个channel发送消息。
+```
+
+
 
 
 ### 高可用redis
