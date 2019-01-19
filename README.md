@@ -152,6 +152,11 @@ key 操作
   
   hmget key field1 field2 一次获取多个hash的 value
   
+  hincrby key field integr 指定hash field 自增
+  
+  hexistis key field 判断hash key值是否存在
+  
+  
 
 ```
 
