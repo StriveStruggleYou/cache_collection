@@ -21,4 +21,10 @@ public class RedisController {
   public Object get() {
     return cacheService.get("name");
   }
+
+  @RequestMapping("/get1")
+  @ResponseBody
+  public Object get1() {
+    return cacheService.getFromSentinel("name");
+  }
 }
