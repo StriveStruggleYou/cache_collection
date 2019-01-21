@@ -1,10 +1,13 @@
-package io.github.ssy.cache.redis;
+package io.github.ssy.cache.service;
 
+import io.github.ssy.cache.redis.JedisPoolSentinelUtil;
+import io.github.ssy.cache.redis.JedisPoolUtil;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
-import redis.clients.util.SafeEncoder;
+import redis.clients.jedis.params.ZAddParams;
 
 
 @Service
@@ -63,6 +66,24 @@ public class CacheService {
     Jedis redis = jedisPoolSentinelUtil.getResource();
     try {
       return redis.lrange(key, start, end);
+    } finally {
+      redis.close();
+    }
+  }
+
+  public double zincrby(String key,double incr,String member){
+    Jedis redis = jedisPoolSentinelUtil.getResource();
+    try {
+      return redis.zincrby(key, incr, member);
+    } finally {
+      redis.close();
+    }
+  }
+
+  public Set<String> top(String key){
+    Jedis redis = jedisPoolSentinelUtil.getResource();
+    try {
+      return redis.zrevrange(key, 0, 10);
     } finally {
       redis.close();
     }
