@@ -1,6 +1,6 @@
 package io.github.ssy.cache.task;
 
-import io.github.ssy.cache.redis.CacheService;
+import io.github.ssy.cache.service.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -19,5 +19,10 @@ public class CommentsTask {
     System.out.println("--------lTrimList--------");
     cacheService.lTrimList("articleKey", 0, 10);
   }
+
+
+
+
+
 
 }
