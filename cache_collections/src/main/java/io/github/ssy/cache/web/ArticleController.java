@@ -1,6 +1,6 @@
 package io.github.ssy.cache.web;
 
-import io.github.ssy.cache.redis.CacheService;
+import io.github.ssy.cache.service.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ArticleController {
 
   private String articleKey = "articleKey";
+
+  private String likeKey = "articleLike";
 
   @Autowired
   CacheService cacheService;
@@ -30,6 +32,20 @@ public class ArticleController {
   public Object addComment(String comment) {
     cacheService.lPushList(articleKey, comment);
     return "success";
+  }
+
+  @RequestMapping("doLike")
+  @ResponseBody
+  public Object doLike(String article) {
+    cacheService.zincrby(likeKey, 1.0, article);
+    return "success";
+  }
+
+
+  @RequestMapping("topLike")
+  @ResponseBody
+  public Object topLike() {
+    return cacheService.top(likeKey);
   }
 
 
