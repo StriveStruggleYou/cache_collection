@@ -1,11 +1,11 @@
 package io.github.ssy.cache.redis;
 
 
+import io.github.ssy.cache.service.CacheService;
 import java.util.HashSet;
 import java.util.Set;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisSentinelPool;
 

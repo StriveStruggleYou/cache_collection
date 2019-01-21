@@ -1,5 +1,6 @@
 package io.github.ssy.cache.redis;
 
+import io.github.ssy.cache.service.CacheService;
 import io.github.ssy.cache.switchs.RedisSwitch;
 import io.github.ssy.cache.switchs.Switch;
 import io.github.ssy.cache.switchs.SwitchFactory;
@@ -7,7 +8,6 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
