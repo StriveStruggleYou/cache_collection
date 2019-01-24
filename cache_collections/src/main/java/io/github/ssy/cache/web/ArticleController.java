@@ -53,5 +53,16 @@ public class ArticleController {
     return cacheService.top(likeKey);
   }
 
+  /**
+   *需要精准设定过期时间的应用
+   *通过nx xx 两种参数可以适应不同的场景
+   */
+  @RequestMapping("addExpirationDate")
+  @ResponseBody
+  public Object addExpirationDate(String key) {
+    Long dateTime = System.currentTimeMillis();
+    return cacheService.zadd("addExpirationDate", dateTime, key);
+  }
+
 
 }
