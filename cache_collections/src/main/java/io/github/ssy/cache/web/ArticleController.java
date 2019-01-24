@@ -137,4 +137,15 @@ public class ArticleController {
   }
 
 
+  /**
+   * 可靠队列数据信息,处理key结束之后在移除
+   */
+  @RequestMapping("rpoplpush")
+  @ResponseBody
+  public Object rpoplpush() {
+    String member = cacheService.rpoplpush("setkey1", "setkey2");
+    return cacheService.srem("setkey1", member);
+  }
+
+
 }

@@ -158,7 +158,6 @@ public class CacheService {
   }
 
 
-
   public Boolean getbit(String key, Long offset) {
     Jedis redis = jedisPoolSentinelUtil.getResource();
     try {
@@ -177,10 +176,32 @@ public class CacheService {
     }
   }
 
-  public Set<String> zrange(String key,Long start,Long end) {
+  public Set<String> zrange(String key, Long start, Long end) {
     Jedis redis = jedisPoolSentinelUtil.getResource();
     try {
-      return redis.zrange(key, start,end);
+      return redis.zrange(key, start, end);
+    } finally {
+      redis.close();
+    }
+  }
+
+
+  public String rpoplpush(String key1, String key2) {
+    Jedis redis = jedisPoolSentinelUtil.getResource();
+    try {
+      return redis.rpoplpush(key1, key2);
+    } finally {
+      redis.close();
+    }
+  }
+
+  /**
+   *移除队列中的一个元素
+   */
+  public Long srem(String key1, String key2) {
+    Jedis redis = jedisPoolSentinelUtil.getResource();
+    try {
+      return redis.srem(key1, key2);
     } finally {
       redis.close();
     }
