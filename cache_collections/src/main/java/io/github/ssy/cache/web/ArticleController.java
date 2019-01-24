@@ -125,4 +125,16 @@ public class ArticleController {
   }
 
 
+  /**
+   * Redis 实现自动补全功能， 1.sort 插入数据会自动排序 2.利用zrank 获取前面的索引 3.zrange key start end  步骤2改成索引改成3的start
+   * 4.end范围内数据数据还要自己过滤一下
+   */
+  @RequestMapping("auto")
+  @ResponseBody
+  public Object auto() {
+    Long index = cacheService.zrank("setkey1", "setkey2");
+    return cacheService.zrange("setkey1", index, index + 10);
+  }
+
+
 }

@@ -168,6 +168,24 @@ public class CacheService {
     }
   }
 
+  public Long zrank(String key, String member) {
+    Jedis redis = jedisPoolSentinelUtil.getResource();
+    try {
+      return redis.zrank(key, member);
+    } finally {
+      redis.close();
+    }
+  }
+
+  public Set<String> zrange(String key,Long start,Long end) {
+    Jedis redis = jedisPoolSentinelUtil.getResource();
+    try {
+      return redis.zrange(key, start,end);
+    } finally {
+      redis.close();
+    }
+  }
+
 
   public CacheService(JedisPoolUtil jedisPoolUtil) {
     this.jedisPoolUtil = jedisPoolUtil;
