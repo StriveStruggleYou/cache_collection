@@ -71,7 +71,7 @@ public class CacheService {
     }
   }
 
-  public double zincrby(String key,double incr,String member){
+  public double zincrby(String key, double incr, String member) {
     Jedis redis = jedisPoolSentinelUtil.getResource();
     try {
       return redis.zincrby(key, incr, member);
@@ -80,7 +80,7 @@ public class CacheService {
     }
   }
 
-  public Set<String> top(String key){
+  public Set<String> top(String key) {
     Jedis redis = jedisPoolSentinelUtil.getResource();
     try {
       return redis.zrevrange(key, 0, 10);
@@ -90,19 +90,30 @@ public class CacheService {
   }
 
 
-  public double zadd(String key,double score,String member){
+  public double zadd(String key, double score, String member) {
     Jedis redis = jedisPoolSentinelUtil.getResource();
     try {
-      ZAddParams params=new ZAddParams();
+      ZAddParams params = new ZAddParams();
       //不存在才执行
       params.nx();
-      return redis.zadd(key, score, member,params);
+      return redis.zadd(key, score, member, params);
     } finally {
       redis.close();
     }
   }
 
 
+  public double uniq(String key, String member) {
+    Jedis redis = jedisPoolSentinelUtil.getResource();
+    try {
+      ZAddParams params = new ZAddParams();
+      //不存在才执行
+      params.nx();
+      return redis.sadd(key, member);
+    } finally {
+      redis.close();
+    }
+  }
 
 
   public CacheService(JedisPoolUtil jedisPoolUtil) {
