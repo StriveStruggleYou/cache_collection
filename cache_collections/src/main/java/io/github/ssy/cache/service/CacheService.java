@@ -116,6 +116,27 @@ public class CacheService {
   }
 
 
+  //左边推数据，右边拉数据
+  public double listPush(String key, String member) {
+    Jedis redis = jedisPoolSentinelUtil.getResource();
+    try {
+
+      return redis.lpush(key, member);
+    } finally {
+      redis.close();
+    }
+  }
+
+  public String listPop(String key) {
+    Jedis redis = jedisPoolSentinelUtil.getResource();
+    try {
+      return redis.rpop(key);
+    } finally {
+      redis.close();
+    }
+  }
+
+
   public CacheService(JedisPoolUtil jedisPoolUtil) {
     this.jedisPoolUtil = jedisPoolUtil;
   }

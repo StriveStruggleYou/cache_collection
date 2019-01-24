@@ -73,5 +73,25 @@ public class ArticleController {
     return cacheService.uniq("uniq", key);
   }
 
+  /**
+   * 简单的对列，左进右出
+   */
+  @RequestMapping("listPush")
+  @ResponseBody
+  public Object listPush(String key) {
+    Long dateTime = System.currentTimeMillis();
+    return cacheService.listPush("listPush", key);
+  }
+
+  /**
+   * 简单的对列，左进右出
+   */
+  @RequestMapping("listPop")
+  @ResponseBody
+  public Object listPop() {
+    Long dateTime = System.currentTimeMillis();
+    return cacheService.listPop("listPush");
+  }
+
 
 }
