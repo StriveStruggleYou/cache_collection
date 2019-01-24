@@ -34,6 +34,9 @@ public class ArticleController {
     return "success";
   }
 
+  /**
+   * 排行榜应用，取 TOP N 操作,点赞上升排名
+   */
   @RequestMapping("doLike")
   @ResponseBody
   public Object doLike(String article) {
@@ -41,7 +44,9 @@ public class ArticleController {
     return "success";
   }
 
-
+  /**
+   * 排行榜应用，取 TOP N 操作
+   */
   @RequestMapping("topLike")
   @ResponseBody
   public Object topLike() {
