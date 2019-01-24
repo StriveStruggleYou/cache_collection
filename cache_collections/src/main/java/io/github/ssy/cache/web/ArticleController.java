@@ -64,7 +64,7 @@ public class ArticleController {
   }
 
   /**
-   * set 直接可以去重
+   * set 直接可以去重，根据返回值确定是否存在
    */
   @RequestMapping("uniq")
   @ResponseBody
@@ -91,6 +91,37 @@ public class ArticleController {
   public Object listPop() {
     Long dateTime = System.currentTimeMillis();
     return cacheService.listPop("listPush");
+  }
+
+
+  /**
+   * 设置bit位数据信息
+   */
+  @RequestMapping("sitBit")
+  @ResponseBody
+  public Object sitBit() {
+    Long dateTime = System.currentTimeMillis();
+    return cacheService.sitbit("listPush", 1L, true);
+  }
+
+  /**
+   * 设置bit位数据信息
+   */
+  @RequestMapping("getBit")
+  @ResponseBody
+  public Object getBit() {
+    Long dateTime = System.currentTimeMillis();
+    return cacheService.getbit("getBit", 1L);
+  }
+
+
+  /**
+   * 获取set交集
+   */
+  @RequestMapping("sinter")
+  @ResponseBody
+  public Object sinter() {
+    return cacheService.sinter("setkey1", "setkey2");
   }
 
 

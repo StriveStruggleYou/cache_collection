@@ -115,6 +115,18 @@ public class CacheService {
     }
   }
 
+  /**
+   * 求两个set的交集
+   */
+  public Set<String> sinter(String setKey1, String setKey2) {
+    Jedis redis = jedisPoolSentinelUtil.getResource();
+    try {
+      return redis.sinter(setKey1, setKey2);
+    } finally {
+      redis.close();
+    }
+  }
+
 
   //左边推数据，右边拉数据
   public double listPush(String key, String member) {
@@ -131,6 +143,26 @@ public class CacheService {
     Jedis redis = jedisPoolSentinelUtil.getResource();
     try {
       return redis.rpop(key);
+    } finally {
+      redis.close();
+    }
+  }
+
+  public Boolean sitbit(String key, Long offset, Boolean value) {
+    Jedis redis = jedisPoolSentinelUtil.getResource();
+    try {
+      return redis.setbit(key, offset, value);
+    } finally {
+      redis.close();
+    }
+  }
+
+
+
+  public Boolean getbit(String key, Long offset) {
+    Jedis redis = jedisPoolSentinelUtil.getResource();
+    try {
+      return redis.getbit(key, offset);
     } finally {
       redis.close();
     }
