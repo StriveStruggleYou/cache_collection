@@ -198,10 +198,10 @@ public class CacheService {
   /**
    *移除队列中的一个元素
    */
-  public Long srem(String key1, String key2) {
+  public Long lrem(String key1, String key2) {
     Jedis redis = jedisPoolSentinelUtil.getResource();
     try {
-      return redis.srem(key1, key2);
+      return redis.lrem(key1, 1L,key2);
     } finally {
       redis.close();
     }
