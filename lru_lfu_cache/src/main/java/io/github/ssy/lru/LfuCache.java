@@ -62,9 +62,9 @@ public class LfuCache {
     }
   }
 
-  public String remove(String key) {
+  public void remove(String key) {
     synchronized (this) {
-      return cache.remove(key);
+      cache.remove(key);
     }
   }
 
