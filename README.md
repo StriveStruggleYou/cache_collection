@@ -495,3 +495,20 @@ expireAfterWrite()
           }
         }, Executors.newSingleThreadExecutor());
 ```
+#### 主动刷新（也有同步和异步的区分）
+```
+.build(new CacheLoader<Integer, String>() {
+          @Override
+          public String load(Integer integer) throws Exception {
+            return "2222";
+          }
+
+          @Override
+          public ListenableFuture<String> reload(Integer key, String oldValue) throws Exception {
+            ListenableFuture<String> listenableFuture = Futures.immediateFuture("test");
+            return listenableFuture;
+          }
+        });
+        //只有这个方法才能会主动刷新
+        cache.getIfPresent()
+```
