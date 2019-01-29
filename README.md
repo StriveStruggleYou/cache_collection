@@ -512,3 +512,11 @@ expireAfterWrite()
         //只有这个方法才能会主动刷新
         cache.getIfPresent()
 ```
+#### 缓存效果
+```
+CacheBuilder.recordStats()用来开启 Guava Cache 的统计功能。统计打开后，Cache.stats()方法会返回 CacheStats 对象以提供如下统计信息：
+
+hitRate()：缓存命中率；
+averageLoadPenalty()：加载新值的平均时间，单位为纳秒；
+evictionCount()：缓存项被回收的总数，不包括显式清除。
+```
