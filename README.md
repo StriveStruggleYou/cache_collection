@@ -448,3 +448,67 @@ Redis的命令都是原子性的，你可以轻松地利用 INCR，DECR 命令�
 
 
 ## memeroy
+
+### guava缓存
+
+#### 基于容量（key数量，key权重）
+##### 容量key数量
+这里我们需要对key的size设置的大一点，因为guava是临近这个size就开始回收，不是达到这个size才回收需要注意。
+##### key权重
+这里如果我们基于key value所使用的内存大小，那么我们就可以对使用的内存大小进行控制。
+
+#### 基于时间（获取时间，覆盖写时间）
+##### 获取时间
+```
+expireAfterAccess()
+```
+##### 覆盖写时间
+```
+expireAfterWrite()
+```
+
+#### 基于引用
+```
+通过使用弱引用的键、或弱引用的值、或软引用的值，Guava Cache 可以把缓存设置为允许垃圾回收：
+```
+#### 显式清除
+```
+个别清除：Cache.invalidate(key)
+批量清除：Cache.invalidateAll(keys)
+清除所有缓存项：Cache.invalidateAll()
+```
+#### 移除通知（同步／异步）
+同步
+```
+ RemovalListener<Integer, String> removalListener = new RemovalListener<Integer, String>() {
+      public void onRemoval(RemovalNotification<Integer, String> removal) {
+        System.out.println("remove key:" + removal.getKey() + " value:" + removal.getValue());
+      }
+    };
+```
+异步
+```
+ RemovalListener<Integer, String> removalListener = RemovalListeners
+        .asynchronous(new RemovalListener<Integer, String>() {
+          public void onRemoval(RemovalNotification<Integer, String> removal) {
+            System.out.println("remove key:" + removal.getKey() + " value:" + removal.getValue());
+          }
+        }, Executors.newSingleThreadExecutor());
+```
+#### 主动刷新（也有同步和异步的区分）
+```
+.build(new CacheLoader<Integer, String>() {
+          @Override
+          public String load(Integer integer) throws Exception {
+            return "2222";
+          }
+
+          @Override
+          public ListenableFuture<String> reload(Integer key, String oldValue) throws Exception {
+            ListenableFuture<String> listenableFuture = Futures.immediateFuture("test");
+            return listenableFuture;
+          }
+        });
+        //只有这个方法才能会主动刷新
+        cache.getIfPresent()
+```
