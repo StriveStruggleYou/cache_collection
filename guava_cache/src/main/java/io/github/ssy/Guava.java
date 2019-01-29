@@ -2,40 +2,28 @@ package io.github.ssy;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.cache.RemovalListener;
+import com.google.common.cache.RemovalListeners;
+import com.google.common.cache.RemovalNotification;
 import com.google.common.cache.Weigher;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class Guava {
 
   public static void main(String args[]) throws ExecutionException {
 
-    Cache<Integer, String> cache = CacheBuilder.newBuilder()
-        //设置cache的初始大小为10，要合理设置该值
-        .initialCapacity(10)
-        .maximumSize(15)
-        //设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作
-        .concurrencyLevel(5)
-        //设置cache中的数据在写入之后的存活时间为10分钟
-        .expireAfterWrite(10, TimeUnit.MINUTES)
-        //构建cache实例
-        .build();
+    try {
+      refesh();
+      Thread.sleep(100000);
+    } catch (Exception e) {
 
-    //设置遍历设置缓存基础数据信息
-    for (int i = 0; i < 18; i++) {
-      cache.put(i, "ok" + i);
-    }
-
-    //遍历查询
-    for (Integer key : cache.asMap().keySet()) {
-      String value = cache.get(key, new Callable<String>() {
-        public String call() throws Exception {
-          return "no";
-        }
-      });
-      System.out.println(value);
     }
     //
   }
@@ -103,5 +91,96 @@ public class Guava {
 
     return cache;
   }
+
+  /**
+   * 移除监听器
+   */
+  static Cache<Integer, String> removeCache() throws InterruptedException {
+
+    RemovalListener<Integer, String> removalListener = new RemovalListener<Integer, String>() {
+      public void onRemoval(RemovalNotification<Integer, String> removal) {
+        System.out.println("remove key:" + removal.getKey() + " value:" + removal.getValue());
+      }
+    };
+
+    Cache<Integer, String> cache = CacheBuilder.newBuilder()
+        //设置cache的初始大小为10，要合理设置该值
+        .initialCapacity(5)
+        //设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作
+        .concurrencyLevel(5)
+        .maximumSize(3)
+        //设置cache中的数据在写入之后的存活时间为10分钟
+        .expireAfterWrite(1, TimeUnit.SECONDS)
+        .removalListener(removalListener)
+        //构建cache实例
+        .build();
+
+    cache.put(1, "nihao");
+
+    Thread.sleep(10000);
+    return cache;
+
+  }
+
+  /**
+   * 移除异步监听器
+   */
+
+  public Cache<Integer, String> removeAyncCache() throws Exception {
+    RemovalListener<Integer, String> removalListener = RemovalListeners
+        .asynchronous(new RemovalListener<Integer, String>() {
+          public void onRemoval(RemovalNotification<Integer, String> removal) {
+            System.out.println("remove key:" + removal.getKey() + " value:" + removal.getValue());
+          }
+        }, Executors.newSingleThreadExecutor());
+
+    Cache<Integer, String> cache = CacheBuilder.newBuilder()
+        //设置cache的初始大小为10，要合理设置该值
+        .initialCapacity(5)
+        //设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作
+        .concurrencyLevel(5)
+        .maximumSize(3)
+        //设置cache中的数据在写入之后的存活时间为10分钟
+        .expireAfterWrite(1, TimeUnit.SECONDS)
+
+        .removalListener(removalListener)
+        //构建cache实例
+        .build();
+    cache.put(1, "nihao");
+    Thread.sleep(10000);
+    return cache;
+  }
+
+  public static void refesh() throws ExecutionException, InterruptedException {
+    final Cache<Integer, String> cache = CacheBuilder.newBuilder()
+        .refreshAfterWrite(5, TimeUnit.SECONDS)
+        .build(new CacheLoader<Integer, String>() {
+          @Override
+          public String load(Integer integer) throws Exception {
+            return "2222";
+          }
+
+          @Override
+          public ListenableFuture<String> reload(Integer key, String oldValue) throws Exception {
+            ListenableFuture<String> listenableFuture = Futures.immediateFuture("test");
+            return listenableFuture;
+          }
+        });
+
+    cache.put(1, "nihao");
+
+    System.out.println(cache.getIfPresent(1));
+
+    System.out.println(cache.getIfPresent(2));
+
+    Thread.sleep(6000);
+
+    System.out.println(cache.getIfPresent(1));
+
+    System.out.println(cache.getIfPresent(1));
+
+
+  }
+
 
 }
