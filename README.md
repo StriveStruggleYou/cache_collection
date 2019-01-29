@@ -471,3 +471,27 @@ expireAfterWrite()
 ```
 通过使用弱引用的键、或弱引用的值、或软引用的值，Guava Cache 可以把缓存设置为允许垃圾回收：
 ```
+#### 显式清除
+```
+个别清除：Cache.invalidate(key)
+批量清除：Cache.invalidateAll(keys)
+清除所有缓存项：Cache.invalidateAll()
+```
+#### 移除通知（同步／异步）
+同步
+```
+ RemovalListener<Integer, String> removalListener = new RemovalListener<Integer, String>() {
+      public void onRemoval(RemovalNotification<Integer, String> removal) {
+        System.out.println("remove key:" + removal.getKey() + " value:" + removal.getValue());
+      }
+    };
+```
+异步
+```
+ RemovalListener<Integer, String> removalListener = RemovalListeners
+        .asynchronous(new RemovalListener<Integer, String>() {
+          public void onRemoval(RemovalNotification<Integer, String> removal) {
+            System.out.println("remove key:" + removal.getKey() + " value:" + removal.getValue());
+          }
+        }, Executors.newSingleThreadExecutor());
+```
